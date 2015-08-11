@@ -15,6 +15,8 @@
 <p class="alert"><%= alert %></p>
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container-fluid">
+    <%= link_to 'todo rubygarage', root_url, :class => 'navbar-brand  text-uppercase' %>
+
     <% if user_signed_in? %>
         <ul class="nav navbar-nav navbar-right">
           <li>

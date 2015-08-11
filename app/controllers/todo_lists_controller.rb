@@ -5,6 +5,7 @@ class TodoListsController < ApplicationController
   # GET /todo_lists.json
   def index
     @todo_lists = TodoList.where("user_id = ?",current_user.id)
+
   end
 
   # GET /todo_lists/1
@@ -15,10 +16,13 @@ class TodoListsController < ApplicationController
   # GET /todo_lists/new
   def new
     @todo_list = TodoList.new
+    @todo_list.todo_items.build
+
   end
 
   # GET /todo_lists/1/edit
   def edit
+    @todo_list.todo_items.build
   end
 
   # POST /todo_lists
@@ -28,11 +32,14 @@ class TodoListsController < ApplicationController
     @todo_list.user_id=current_user.id
     respond_to do |format|
       if @todo_list.save
-        format.html { redirect_to @todo_list, notice: 'Todo list was successfully created.' }
+        format.html { redirect_to @todo_list}
         format.json { render :show, status: :created, location: @todo_list }
+        format.js
       else
         format.html { render :new }
         format.json { render json: @todo_list.errors, status: :unprocessable_entity }
+        format.js
+
       end
     end
   end
@@ -42,11 +49,14 @@ class TodoListsController < ApplicationController
   def update
     respond_to do |format|
       if @todo_list.update(todo_list_params)
-        format.html { redirect_to @todo_list, notice: 'Todo list was successfully updated.' }
+        format.html { redirect_to @todo_list}
         format.json { render :show, status: :ok, location: @todo_list }
+        format.js
       else
         format.html { render :edit }
         format.json { render json: @todo_list.errors, status: :unprocessable_entity }
+        format.js
+
       end
     end
   end
@@ -54,10 +64,15 @@ class TodoListsController < ApplicationController
   # DELETE /todo_lists/1
   # DELETE /todo_lists/1.json
   def destroy
+    @todo_list.todo_items.each do |todo_item|
+      todo_item.destroy
+    end
     @todo_list.destroy
+    @todo_lists = TodoList.where("user_id = ?",current_user.id)
     respond_to do |format|
-      format.html { redirect_to root_url, notice: 'Todo list was successfully destroyed.' }
+      format.html { redirect_to root_url}
       format.json { head :no_content }
+      format.js
     end
   end
 

@@ -12,6 +12,7 @@
  *
  *= require_tree .
  *= require_self
+
  */
 @import "bootstrap-sprockets";
 @import "bootstrap";
@@ -134,36 +135,39 @@ body{
       }
     }
   }
-  #form{
-    margin-top: 2em;
-    padding: 0 5%;
-    input[type="text"]{
-      width: 72%;
-      margin-right: 2%;
-      display: inline-block;
-      outline: none;
-      background: rgba(250,250,250,.4);
-      border: none;
-      height: 40px;
-      border-radius: 4px;
-      padding: 1em 2em;
-    }
-    input[type="submit"]{
-      background: rgba(250,250,250,.4);
-      outline: none;
-      border: none;
-      height: 40px;
-      width: 25%;
-      border-radius: 4px;
-      display: inline-block;
-      cursor: pointer;
-      transition: all .4s ease-in-out;
-      &:hover{
-        background: $dark;
-      }
-    }
-    ::-webkit-input-placeholder{color: $dark}
+
+}
+
+
+#form{
+  margin-top: 2em;
+  padding: 0 5%;
+  input[type="text"]{
+    width: 72%;
+    margin-right: 2%;
+    display: inline-block;
+    outline: none;
+    background: rgba(250,250,250,.4);
+    border: none;
+    height: 40px;
+    border-radius: 4px;
+    padding: 1em 2em;
   }
+  input[type="submit"]{
+    background: rgba(250,250,250,.4);
+    outline: none;
+    border: none;
+    height: 40px;
+    width: 25%;
+    border-radius: 4px;
+    display: inline-block;
+    cursor: pointer;
+    transition: all .4s ease-in-out;
+    &:hover{
+      background: $dark;
+    }
+  }
+  ::-webkit-input-placeholder{color: $dark}
 }
 
 .links{

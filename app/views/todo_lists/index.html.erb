@@ -1,10 +1,32 @@
+<div id="todo_lists">
 <%	 @todo_lists.each do |todo_list| %>
-    <div class="index_row clearfix">
-      <h2 class="todo_list_title"><%= link_to todo_list.title,todo_list%></h2>
-      <p class="todo_list_sub_title"><%= todo_list.description %></p>
-    </div>
+      <%= render todo_list%>
 <%	end  %>
-
+</div>
 <div class="links">
   <%=	 link_to "New Todo List", new_todo_list_path %>
 </div>
+<button class="btn btn-primary" data-toggle="modal" data-target="#myModal">New Todo List</button>
+<div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <%= form_for TodoList.new, remote: true,class: "form" do |f| %>
+    <div class="field">
+              <%= f.label :title %><br>
+              <%= f.text_field :title %>
+            </div>
+            <div class="field">
+              <%= f.label :description %><br>
+              <%= f.text_area :description %>
+            </div>
+            <div class="actions">
+              <%= f.submit  %>
+            </div>
+
+<% end %>
+
+</div>
+  </div>
+</div>
+
+
