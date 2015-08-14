@@ -1,10 +1,10 @@
 class TodoItemsController < ApplicationController
-  before_action :set_todo_list
+  before_action :set_todo_list,:set_todo_lists
   before_action :set_todo_item,except: [:create]
   def create
     @todo_item=@todo_list.todo_items.create(todo_item_params)
     respond_to do |format|
-      format.html{redirect_to @todo_list}
+      format.html{redirect_to @todo_list,@todo_item}
       format.js
     end
   end
@@ -30,6 +30,9 @@ class TodoItemsController < ApplicationController
     end
   end
   private
+  def set_todo_lists
+    @todo_lists = TodoList.where("user_id = ?",current_user.id)
+  end
   def set_todo_list
     @todo_list=TodoList.find(params[:todo_list_id])
   end
@@ -38,6 +41,6 @@ class TodoItemsController < ApplicationController
 
   end
   def todo_item_params
-    params[:todo_item].permit(:content,:todo_list_id)
+    params[:todo_item].permit(:content)
   end
 end

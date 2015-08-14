@@ -30,6 +30,7 @@ class TodoListsController < ApplicationController
   def create
     @todo_list = TodoList.new(todo_list_params)
     @todo_list.user_id=current_user.id
+
     respond_to do |format|
       if @todo_list.save
         format.html { redirect_to @todo_list}
@@ -84,7 +85,7 @@ class TodoListsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def todo_list_params
-      params.require(:todo_list).permit(:title, :description)
+      params.require(:todo_list).permit(:title, :description, todo_items_attributes: [:content])
     end
 
     def current_todo_list

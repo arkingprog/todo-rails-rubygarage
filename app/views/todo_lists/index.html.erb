@@ -3,10 +3,8 @@
       <%= render todo_list%>
 <%	end  %>
 </div>
-<div class="links">
-  <%=	 link_to "New Todo List", new_todo_list_path %>
-</div>
-<button class="btn btn-primary" data-toggle="modal" data-target="#myModal">New Todo List</button>
+
+<button class="btn btn-primary" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-plus"></span> New Todo List</button>
 <div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -24,7 +22,6 @@
             </div>
 
 <% end %>
-
 </div>
   </div>
 </div>

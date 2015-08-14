@@ -2,51 +2,79 @@
   <h2 class="todo_list_title"><%= link_to todo_list.title,todo_list%></h2>
   <div class="trash">
     <%= link_to todo_list_path(todo_list),remote: true,method: :delete do%>
-        <i class="fa fa-trash"></i>
+        <i class="glyphicon glyphicon-trash"></i>
     <%	 end %>
   </div>
-<div class="trash">
-  <%= link_to edit_todo_list_path(todo_list) do%>
-  <i class="fa fa-pencil-square-o"></i>
+<div class="trash" >
+  <%= link_to "#",id: "edit_todo_list","data-toggle" => "modal", "data-target" =>"#myModalEdit#{todo_list.id}",remote: true do%>
+  <i class="glyphicon glyphicon-pencil" ></i>
       <% end %>
 </div>
   <p class="todo_list_sub_title"><%= todo_list.description %></p>
-
-  <% todo_list.todo_items.each do |todo_item| %>
-      <div id="todo_items_wrapper">
-        <div class="row row clearfix">
-          <% if todo_item.completed? %>
-              <div class="complete">
-                <%= link_to complete_todo_list_todo_item_path(todo_list,todo_item.id),remote: true,method: :patch do%>
-                    <i style="opacity: 0.4" class="fa fa-check"></i>
-                <%	 end %>
-              </div>
-              <div class="todo_item">
-                <p style="opacity: 0.4;"><strike><%= todo_item.content %></strike></p>
-              </div>
-              <div class="trash">
-                <%= link_to todo_list_todo_item_path(todo_list,todo_item.id),remote: true,method: :delete do%>
-                    <i class="fa fa-trash"></i>
-                <%	 end %>
-              </div>
-          <% else %>
-              <div class="complete">
-                <%= link_to complete_todo_list_todo_item_path(todo_list,todo_item.id),remote: true,method: :patch do%>
-                    <i class="fa fa-check"></i>
-                <%	 end %>
-              </div>
-              <div class="todo_item">
-                <p><%= todo_item.content %></p>
-              </div>
-              <div class="trash">
-                <%= link_to todo_list_todo_item_path(todo_list,todo_item.id),remote: true,method: :delete do%>
-                    <i class="fa fa-trash"></i>
-                <%	 end %>
-              </div>
-          <% end %>
+  <div class="form">
+    <form class="new_todo_item" id="new_todo_item" action="/todo_lists/<%=todo_list.id%>/todo_items" accept-charset="utf-8" data-remote="true" method="post">
+      <input name="utf8" type="hidden" value="?">
+      <input placeholder="Start typing here to create a task" type="text" style="width: 70%" name="todo_item[content]" id="todo_item_content">
+      <input type="submit" name="commit" value="Add Task" class="create-todo-item">
+    </form>
+  </div>
+  <!-- Modal Edit-->
+  <div class="modal fade bs-example-modal-lg" id="myModalEdit<%= todo_list.id %>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="forms">
+          <form class="edit_todo_list" id="edit_todo_list_<%= todo_list.id %>" action="/todo_lists/<%= todo_list.id %>" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="?"><input type="hidden" name="_method" value="patch">
+            <div class="field">
+              <label for="todo_list_title">Title</label><br>
+              <input type="text" value="<%=todo_list.title %>" name="todo_list[title]" id="todo_list_title">
+            </div>
+            <div class="field">
+              <label for="todo_list_description">Description</label><br>
+              <textarea name="todo_list[description]" id="todo_list_description"><%= todo_list.description %></textarea>
+            </div>
+            <div class="actions">
+              <input type="submit" name="commit" value="Update Todo list">
+            </div>
+          </form>
         </div>
       </div>
-  <% end %>
+    </div>
+  </div>
+  <div id="todo_items_wrapper_list">
+      <% todo_list.todo_items.each do |todo_item| %>
+          <div id="todo_items_wrapper">
+            <div class="row row clearfix">
+              <% if todo_item.completed? %>
+                  <div class="complete">
+                        <i style="opacity: 0.4" class="glyphicon glyphicon-ok"></i>
+                  </div>
+                  <div class="todo_item">
+                    <p style="opacity: 0.4;"><strike><%= todo_item.content %></strike></p>
+                  </div>
+                  <div class="trash">
+                    <%= link_to todo_list_todo_item_path(todo_list,todo_item.id),remote: true,method: :delete do%>
+                        <i class="glyphicon glyphicon-trash"></i>
+                    <%	 end %>
+                  </div>
+              <% else %>
+                  <div class="complete">
+                    <%= link_to complete_todo_list_todo_item_path(todo_list,todo_item.id),remote: true,method: :patch do%>
+                        <i class="glyphicon glyphicon-ok"></i>
+                    <%	 end %>
+                  </div>
+                  <div class="todo_item">
+                    <p><%= todo_item.content %></p>
+                  </div>
+                  <div class="trash">
+                    <%= link_to todo_list_todo_item_path(todo_list,todo_item.id),remote: true,method: :delete do%>
+                        <i class="glyphicon glyphicon-trash"></i>
+                    <%	 end %>
+                  </div>
+              <% end %>
+            </div>
+          </div>
+      <% end %>
+  </div>
 </div>
 
 
