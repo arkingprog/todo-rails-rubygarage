@@ -4,7 +4,7 @@ Rails.application.routes.draw do
       resources :todo_items do
         member do
           patch :complete
-
+          patch :priority
         end
     end
   end

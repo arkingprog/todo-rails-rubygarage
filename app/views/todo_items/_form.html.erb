@@ -1,4 +1,19 @@
 <%= form_for([@todo_list, @todo_list.todo_items.build],remote: true) do |f| %>
     <%= f.text_field :content, placeholder: "New Todo" %>
+     <%= f.text_field :deadline, placeholder: "Pick the date and time",class: "form-control", id: 'datetimepicker' %>
+
     <%= f.submit class: "create-todo-item" %>
 <% end %>
+
+
+
+
+<script type="text/javascript">
+    $(function () {
+        $('#datetimepicker').datetimepicker({
+            format: "YYYY-MM-DD HH:mm:ss.SSS"
+        });
+    });
+</script>
+
+

@@ -16,7 +16,17 @@ class TodoItemsController < ApplicationController
       format.js
     end
   end
-
+  def priority
+    if @todo_item.priority==0
+    @todo_item.update_attribute(:priority,1)
+    else
+      @todo_item.update_attribute(:priority,0)
+    end
+    respond_to do |format|
+      format.html{ redirect_to @todo_list}
+      format.js
+    end
+  end
   def destroy
     @todo_item=@todo_list.todo_items.find(params[:id])
     if @todo_item.destroy
@@ -29,7 +39,10 @@ class TodoItemsController < ApplicationController
       format.js
     end
   end
+
+
   private
+
   def set_todo_lists
     @todo_lists = TodoList.where("user_id = ?",current_user.id)
   end
@@ -41,6 +54,6 @@ class TodoItemsController < ApplicationController
 
   end
   def todo_item_params
-    params[:todo_item].permit(:content)
+    params[:todo_item].permit(:content,:deadline)
   end
 end

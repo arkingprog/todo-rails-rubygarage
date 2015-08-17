@@ -1,6 +1,7 @@
 class TodoListsController < ApplicationController
   before_action :set_todo_list, only: [:show, :edit, :update, :destroy]
   before_action :current_todo_list, only: [:show]
+
   # GET /todo_lists
   # GET /todo_lists.json
   def index
@@ -48,8 +49,10 @@ class TodoListsController < ApplicationController
   # PATCH/PUT /todo_lists/1
   # PATCH/PUT /todo_lists/1.json
   def update
+    @todo_id=@todo_list.id
     respond_to do |format|
       if @todo_list.update(todo_list_params)
+        @todo_lists = TodoList.where("user_id = ?",current_user.id)
         format.html { redirect_to @todo_list}
         format.json { render :show, status: :ok, location: @todo_list }
         format.js

@@ -1,2 +1,4 @@
-
-$('#myModalEdit').modal('hide');
+$('#todo_lists').empty().append("<%= j render @todo_lists%>");
+$('#myModalEdit<%=@todo_id%>').modal('hide');
+$('body').removeClass('modal-open');
+$('.modal-backdrop').remove();
