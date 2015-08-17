@@ -71,6 +71,7 @@ class TodoListsController < ApplicationController
     @todo_list.todo_items.each do |todo_item|
       todo_item.destroy
     end
+    @todo_list_id=@todo_list.id
     @todo_list.destroy
     @todo_lists = TodoList.where("user_id = ?",current_user.id)
     respond_to do |format|

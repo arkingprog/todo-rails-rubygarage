@@ -11,6 +11,7 @@ class TodoItemsController < ApplicationController
 
   def complete
     @todo_item.update_attribute(:completed_at,Time.now)
+
     respond_to do |format|
       format.html{ redirect_to @todo_list}
       format.js
@@ -40,7 +41,20 @@ class TodoItemsController < ApplicationController
     end
   end
 
+  def update
 
+    respond_to do |format|
+      if @todo_item.update(todo_item_params)
+
+        format.html { redirect_to @todo_list}
+        format.js
+      else
+        format.html { render :edit }
+        format.js
+
+      end
+    end
+  end
   private
 
   def set_todo_lists

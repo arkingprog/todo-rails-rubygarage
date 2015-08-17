@@ -1,4 +1,5 @@
-$('#todo_lists').empty().append("<%= j render @todo_lists%>");
+
 $('#myModalEdit<%=@todo_id%>').modal('hide');
 $('body').removeClass('modal-open');
 $('.modal-backdrop').remove();
+$("#todo_list_id_<%= @todo_id%>").replaceWith('<%= j (  render @todo_lists.where("id= ?",@todo_id) )%>');

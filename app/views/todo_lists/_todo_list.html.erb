@@ -1,86 +1,93 @@
-<div class="index_row clearfix" id="todo_list_id_<%=todo_list.id%>">
-  <h2 class="todo_list_title"><%= link_to todo_list.title, todo_list_path(todo_list) %></h2>
-  <div class="trash">
-    <%= link_to todo_list_path(todo_list),remote: true,method: :delete do%>
-        <i class="glyphicon glyphicon-trash"></i>
-    <%	 end %>
-  </div>
-<div class="trash" >
-  <%= link_to "#",id: "edit_todo_list","data-toggle" => "modal", "data-target" =>"#myModalEdit#{todo_list.id}",remote: true do%>
-  <i class="glyphicon glyphicon-pencil" ></i>
-      <% end %>
-</div>
-  <p class="todo_list_sub_title"><%= todo_list.description %></p>
-  <div class="form">
-    <form class="new_todo_item" id="new_todo_item" action="/todo_lists/<%=todo_list.id%>/todo_items" accept-charset="utf-8" data-remote="true" method="post">
-      <input name="utf8" type="hidden" value="?">
-      <input placeholder="Start typing here to create a task" type="text" style="width: 70%" name="todo_item[content]" id="todo_item_content">
-      <input type="submit" name="commit" value="Add Task" class="create-todo-item">
-    </form>
-  </div>
-  <!-- Modal Edit-->
-  <div class="modal fade bs-example-modal-lg" id="myModalEdit<%= todo_list.id %>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="forms">
-          <form class="edit_todo_list" id="edit_todo_list_<%= todo_list.id %>" action="/todo_lists/<%= todo_list.id %>" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="?"><input type="hidden" name="_method" value="patch">
-            <div class="field">
-              <label for="todo_list_title">Title</label><br>
-              <input type="text" value="<%=todo_list.title %>" name="todo_list[title]" id="todo_list_title">
-            </div>
-            <div class="field">
-              <label for="todo_list_description">Description</label><br>
-              <textarea name="todo_list[description]" id="todo_list_description"><%= todo_list.description %></textarea>
-            </div>
-            <div class="actions">
-              <input type="submit" name="commit" value="Update Todo list" >
-            </div>
-          </form>
+<div class="index_row clearfix " id="todo_list_id_<%=todo_list.id%>">
+  <div class="container-fluid title bg-primary">
+            <div  class="row">
+        <div class="col-md-8 ">
+              <h2  class="todo_list_title" ><span class="glyphicon glyphicon-calendar"></span>
+                <%= todo_list.title %></h2>
         </div>
-      </div>
+            <div  class="col-md-2 col-md-offset-2 text-right" >
+              <div class="trash">
+                <h3>
+                <%= link_to "#",id: "edit_todo_list","data-toggle" => "modal", "data-target" =>"#myModalEdit#{todo_list.id}",remote: true do%>
+                    <i class="glyphicon glyphicon-pencil" ></i>
+                <% end %>
+                  |
+                  <%= link_to todo_list_path(todo_list),remote: true,method: :delete do%>
+                      <i class="glyphicon glyphicon-trash"></i>
+                  <%	 end %>
+                </h3>
+            </div>
+        </div>
+            </div>
+  </div>
+
+<div class="row" style="margin-top: 15px; margin-bottom: 15px">
+  <div class="col-md-12 " >
+    <div class="form" style="width: 100%;">
+    <form  class="new_todo_item form form-inline" id="new_todo_item" action="/todo_lists/<%=todo_list.id%>/todo_items" accept-charset="utf-8" data-remote="true" method="post">
+      <span  class="">&nbsp;</span>
+      <span  class="glyphicon glyphicon-plus"></span>
+      <input name="utf8" type="hidden" value="?">
+      <input class="form-control" placeholder="Start typing here to create a task" type="text" style="width: 80%" name="todo_item[content]" id="todo_item_content">
+      <input type="submit" name="commit" value="Add Task" style="width: 15%" class="create-todo-item btn btn-default">
+    </form>
     </div>
   </div>
-  <div id="todo_items_wrapper_list">
+</div>
+  <div id="todo_items_wrapper_list" class="row">
 
-      <% todo_list.todo_items.each do |todo_item| %>
-          <div id="todo_items_wrapper">
-            <div class="row row clearfix">
+      <% todo_list.todo_items.order(priority: :desc,created_at: :asc).each do |todo_item| %>
+        <!-- Modal Edit Item-->
+        <div class="modal fade bs-example-modal-lg" id="myModalEditItem<%= todo_item.id %>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="forms">
+                <form class="edit_todo_list_todo_item form" id="edit_todo_list_todo_item_<%= todo_item.id %>" action="/todo_lists/<%= todo_list.id %>/todo_items/<%= todo_item.id%>" accept-charset="UTF-8" data-remote="true" method="post">
+                  <input name="utf8" type="hidden" value="?"><input type="hidden" name="_method" value="patch">
+                  <div class="modal-body">
+                    <div class="form-group">
+                      <label for="todo_item_content">Content</label><br>
+                      <input type="text" value="<%=todo_item.content %>" name="todo_item[content]" id="todo_item_content" style="width: 100%">
+
+                    </div>
+                    <div class="form-group">
+                        <input type='text' class="form-control" id='datetimepicker<%=todo_item.id %>' name="todo_item[deadline]" value="<%= todo_item.deadline%>"/>
+                    </div>
+                    <script type="text/javascript">
+                        $(function () {
+                            $('#datetimepicker<%= todo_item.id%>').datetimepicker({
+                                format: "YYYY-MM-DD HH:mm:ss.SSS"
+                            });
+                        });
+                    </script>
+
+
+                  </div>
+                  <div class="modal-footer">
+                    <input type="submit" name="commit" class="btn btn-default" value="Update task" >
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+          <div id="todo_items_wrapper ">
+
+            <div class="row">
               <% if todo_item.completed? %>
-                  <div class="complete">
-                        <i style="opacity: 0.4" class="glyphicon glyphicon-ok"></i>
+                  <div class="col-md-1 ">
+                      <div class="complete pull-right">
+                            <i style="opacity: 0.4" class="glyphicon glyphicon-ok"></i>
+                      </div>
                   </div>
-                  <div class="todo_item">
-                    <p style="opacity: 0.4;"><strike><%= todo_item.content %></strike></p>
+                  <div class="col-md-9">
+                      <div class="todo_item">
+                        <p style="opacity: 0.4;"><strike><%= todo_item.content %></strike></p>
+                      </div>
                   </div>
+                  <div class="col-md-2">
                   <div class="trash">
-                    <%= link_to todo_list_todo_item_path(todo_list,todo_item.id),remote: true,method: :delete do%>
-                        <i class="glyphicon glyphicon-trash"></i>
-                    <%	 end %>
-                    <i> | </i>
-                    <%if todo_item.priority? %>
-                    <%= link_to priority_todo_list_todo_item_path(todo_list,todo_item.id),remote: true,method: :patch do%>
-                        <i class="glyphicon glyphicon-star"></i>
-                    <%	 end %>
-                    <% else %>
-                        <%= link_to priority_todo_list_todo_item_path(todo_list,todo_item.id),remote: true,method: :patch do%>
-                            <i class="glyphicon glyphicon-star-empty"></i>
-                        <%	 end %>
-                    <%end %>
-                  </div>
-              <% else %>
-                  <div class="complete">
-                    <%= link_to complete_todo_list_todo_item_path(todo_list,todo_item.id),remote: true,method: :patch do%>
-                        <i class="glyphicon glyphicon-ok"></i>
-                    <%	 end %>
-                  </div>
-                  <div class="todo_item">
-                    <p><%= todo_item.content %></p>
-                  </div>
-                  <div class="trash">
-                    <%= link_to todo_list_todo_item_path(todo_list,todo_item.id),remote: true,method: :delete do%>
-                        <i class="glyphicon glyphicon-trash"></i>
-                    <%	 end %>
-                    <i> | </i>
                     <%if todo_item.priority? %>
                         <%= link_to priority_todo_list_todo_item_path(todo_list,todo_item.id),remote: true,method: :patch do%>
                             <i class="glyphicon glyphicon-star"></i>
@@ -90,13 +97,81 @@
                             <i class="glyphicon glyphicon-star-empty"></i>
                         <%	 end %>
                     <%end %>
+                    <i> | </i>
+                    <%= link_to "#",id: "edit_todo_list_todo_item","data-toggle" => "modal", "data-target" =>"#myModalEditItem#{todo_item.id}",remote: true  do%>
+                        <i class="glyphicon glyphicon-pencil"></i>
+                    <%	 end %>
+                    <i> | </i>
+                    <%= link_to todo_list_todo_item_path(todo_list,todo_item.id),remote: true,method: :delete do%>
+                        <i class="glyphicon glyphicon-trash"></i>
+                    <%	 end %>
 
+
+                  </div>
+                  </div>
+              <% else %>
+                  <div class="col-md-1">
+                  <div class="complete pull-right">
+                    <%= link_to complete_todo_list_todo_item_path(todo_list,todo_item.id),remote: true,method: :patch do%>
+                        <i class="glyphicon glyphicon-ok"></i>
+                    <%	 end %>
+                  </div>
+                    </div>
+                  <div class="col-md-9  ">
+                  <div class="todo_item">
+                    <p><%= todo_item.content %></p>
+                  </div>
+                    </div>
+                  <div class="col-md-2">
+                  <div class="trash">
+                    <%if todo_item.priority? %>
+                        <%= link_to priority_todo_list_todo_item_path(todo_list,todo_item.id),remote: true,method: :patch do%>
+                            <i class="glyphicon glyphicon-star"></i>
+                        <%	 end %>
+                    <% else %>
+                        <%= link_to priority_todo_list_todo_item_path(todo_list,todo_item.id),remote: true,method: :patch do%>
+                            <i class="glyphicon glyphicon-star-empty"></i>
+                        <%	 end %>
+                        <%end %>
+                    <i> | </i>
+                    <%= link_to "#",id: "edit_todo_list_todo_item","data-toggle" => "modal", "data-target" =>"#myModalEditItem#{todo_item.id}",remote: true  do%>
+                        <i class="glyphicon glyphicon-pencil"></i>
+                        <%	 end %>
+                    <i> | </i>
+                    <%= link_to todo_list_todo_item_path(todo_list,todo_item.id),remote: true,method: :delete do%>
+                        <i class="glyphicon glyphicon-trash"></i>
+                    <%	 end %>
+                  </div>
                   </div>
               <% end %>
             </div>
-          </div>
+
+        </div>
+
       <% end %>
   </div>
 </div>
 
+
+<!-- Modal Edit-->
+<div class="modal fade bs-example-modal-lg" id="myModalEdit<%= todo_list.id %>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="forms">
+        <form class="edit_todo_list form" id="edit_todo_list_<%= todo_list.id %>" action="/todo_lists/<%= todo_list.id %>" accept-charset="UTF-8" data-remote="true" method="post">
+          <input name="utf8" type="hidden" value="?"><input type="hidden" name="_method" value="patch">
+         <div class="modal-body">
+          <div class="form-group">
+            <label for="todo_list_title">Title</label><br>
+            <input type="text" value="<%=todo_list.title %>" name="todo_list[title]" id="todo_list_title" style="width: 100%">
+          </div>
+         </div>
+          <div class="modal-footer">
+            <input type="submit" name="commit" class="btn btn-default" value="Update Todo list" >
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 
