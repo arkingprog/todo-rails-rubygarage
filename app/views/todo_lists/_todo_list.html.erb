@@ -41,13 +41,7 @@
     </div>
   </div>
   <div id="todo_items_wrapper_list">
-    <script>
-        $('#todo_list_id_<%= todo_list.id%>').on('click',function(){
-            <% todo_list.todo_items.each do |todo_item| %>
-            alert('<%= todo_item.content%>');
-            <% end %>
-        })
-    </script>
+
       <% todo_list.todo_items.each do |todo_item| %>
           <div id="todo_items_wrapper">
             <div class="row row clearfix">
