@@ -2,8 +2,10 @@
   <div class="container-fluid title bg-primary">
             <div  class="row">
         <div class="col-md-8 ">
-              <h2  class="todo_list_title" ><span class="glyphicon glyphicon-calendar"></span>
-                <%= todo_list.title %></h2>
+              <h2  class="todo_list_title"><span class="glyphicon glyphicon-calendar"></span>
+                <%= todo_list.title %>
+
+              </h2>
         </div>
             <div  class="col-md-2 col-md-offset-2 text-right" >
               <div class="trash">
@@ -28,7 +30,7 @@
       <span  class="">&nbsp;</span>
       <span  class="glyphicon glyphicon-plus"></span>
       <input name="utf8" type="hidden" value="?">
-      <input class="form-control" placeholder="Start typing here to create a task" type="text" style="width: 80%" name="todo_item[content]" id="todo_item_content">
+      <input class="form-control" placeholder="Start typing here to create a task" required="required" minlength="3" type="text" style="width: 80%" name="todo_item[content]" id="todo_item_content">
       <input type="submit" name="commit" value="Add Task" style="width: 15%" class="create-todo-item btn btn-default">
     </form>
     </div>
@@ -47,7 +49,7 @@
                   <div class="modal-body">
                     <div class="form-group">
                       <label for="todo_item_content">Content</label><br>
-                      <input type="text" value="<%=todo_item.content %>" name="todo_item[content]" id="todo_item_content" style="width: 100%">
+                      <input type="text" value="<%=todo_item.content %>" required="required" minlength="3" name="todo_item[content]" id="todo_item_content" style="width: 100%">
 
                     </div>
                     <div class="form-group">
@@ -57,6 +59,7 @@
                         $(function () {
                             $('#datetimepicker<%= todo_item.id%>').datetimepicker({
                                 format: "YYYY-MM-DD HH:mm:ss.SSS"
+
                             });
                         });
                     </script>
@@ -74,17 +77,31 @@
 
           <div id="todo_items_wrapper ">
 
-            <div class="row">
+            <div class="row" >
               <% if todo_item.completed? %>
                   <div class="col-md-1 ">
                       <div class="complete pull-right">
                             <i style="opacity: 0.4" class="glyphicon glyphicon-ok"></i>
                       </div>
                   </div>
-                  <div class="col-md-9">
+                  <div class="col-md-8">
                       <div class="todo_item">
                         <p style="opacity: 0.4;"><strike><%= todo_item.content %></strike></p>
                       </div>
+                  </div>
+                  <div class="col-md-1">
+                    <p data-toggle="tooltip" data-placement="right" class="pull-right glyphicon glyphicon-calendar" title="
+                      <% if todo_item.deadline.present? %>
+                          <% if todo_item.deadline? %>
+                              <%= distance_of_time_in_words(Time.now + 3.hours,todo_item.deadline)%> left to deadline
+                          <% else %>
+                                Deadline expired
+                          <% end %>
+                    <% else %>
+                          No deadline
+                      <% end %>
+                      ">
+                    </p>
                   </div>
                   <div class="col-md-2">
                   <div class="trash">
@@ -105,8 +122,6 @@
                     <%= link_to todo_list_todo_item_path(todo_list,todo_item.id),remote: true,method: :delete do%>
                         <i class="glyphicon glyphicon-trash"></i>
                     <%	 end %>
-
-
                   </div>
                   </div>
               <% else %>
@@ -117,13 +132,27 @@
                     <%	 end %>
                   </div>
                     </div>
-                  <div class="col-md-9  ">
+                  <div class="col-md-8">
                   <div class="todo_item">
-                    <p><%= todo_item.content %></p>
+                    <p><%= todo_item.content %> </p>
                   </div>
                     </div>
+                  <div class="col-md-1">
+                    <p data-placement="right" data-toggle="tooltip" class="pull-right glyphicon glyphicon-calendar"
+                       title="<% if todo_item.deadline.present? %>
+                          <% if todo_item.deadline? %>
+                              <%= distance_of_time_in_words(Time.now + 3.hours,todo_item.deadline)%> left to deadline
+                          <% else %>
+                                Deadline expired
+                          <% end %>
+                    <% else %>
+                    No deadline
+                    <% end %>
+                      ">
+                    </p>
+                  </div>
                   <div class="col-md-2">
-                  <div class="trash">
+                  <div class="trash" title="test">
                     <%if todo_item.priority? %>
                         <%= link_to priority_todo_list_todo_item_path(todo_list,todo_item.id),remote: true,method: :patch do%>
                             <i class="glyphicon glyphicon-star"></i>
@@ -163,7 +192,7 @@
          <div class="modal-body">
           <div class="form-group">
             <label for="todo_list_title">Title</label><br>
-            <input type="text" value="<%=todo_list.title %>" name="todo_list[title]" id="todo_list_title" style="width: 100%">
+            <input type="text" value="<%=todo_list.title %>" required="required" minlength="3" name="todo_list[title]" id="todo_list_title" style="width: 100%">
           </div>
          </div>
           <div class="modal-footer">
@@ -174,4 +203,3 @@
     </div>
   </div>
 </div>
-

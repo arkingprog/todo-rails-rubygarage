@@ -10,6 +10,8 @@ gem 'sass-rails', '~> 5.0'
 gem 'bootstrap-sass', '~> 3.2.0.2'
 gem 'bootstrap-modal-rails', '~> 2.2.5'
 gem 'font-awesome-sass'
+
+gem 'html5_validators'
 gem 'momentjs-rails', '>= 2.9.0'
 gem 'bootstrap3-datetimepicker-rails', '~> 4.14.30'
 # Use Uglifier as compressor for JavaScript assets
@@ -21,6 +23,7 @@ gem 'coffee-rails', '~> 4.1.0'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
+
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
