@@ -1,4 +1,7 @@
 
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+});
 $('#myModalEdit<%=@todo_id%>').modal('hide');
 $('body').removeClass('modal-open');
 $('.modal-backdrop').remove();

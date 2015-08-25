@@ -1,4 +1,6 @@
 $("#todo_list_id_<%= @todo_item.todo_list.id%>").replaceWith('<%= j (  render @todo_lists.where("id= ?",@todo_item.todo_list.id) )%>');
 
 
-
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+});
