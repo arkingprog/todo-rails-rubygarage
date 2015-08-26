@@ -8,10 +8,8 @@ SQL task
   
 2. get the count of all tasks in each project, order by tasks count descending
 
-  SELECT COUNT(*) AS amount 
-  FROM tasks 
-  GROUP BY project_id 
-  ORDER BY amount DESC;
+  SELECT COUNT(*) AS amount, projects.name 
+  FROM tasks INNER JOIN projects ON project_id = projects.id GROUP BY projects.name ORDER BY amount DESC;
   
 3. get the count of all tasks in each project, order by projects names
   
